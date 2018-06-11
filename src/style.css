@@ -1,0 +1,49 @@
+body, html {
+    height: 100%;
+    margin: 0;
+    font-family: 'Roboto Slab', serif;
+
+}
+
+/* Columnas */
+
+.col400{
+    -webkit-transform-style: preserve-3d;
+    -moz-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+    height: 800px;
+
+}
+
+.col800{
+    -webkit-transform-style: preserve-3d;
+    -moz-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+    height: 800px;
+
+}
+
+.col1{
+    background: blue;
+}
+
+.alt-title{
+    margin-top: 10px;
+    
+}
+.title{
+    text-align: center;
+    margin: 20px;
+    color: #ffffff;
+}
+.slider{
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+.row-title{
+    background: #1a006a;
+}
+.row-belowtitle{
+    height: 50px;
+    background: #303af1;
+}
