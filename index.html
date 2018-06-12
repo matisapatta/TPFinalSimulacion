@@ -15,6 +15,11 @@
     <script src="node_modules/jquery/dist/jquery.js"></script>
     <script src="bower_components/plotlyjs/plotly.js"></script>
     <script src="bower_components/rangeslider.js/dist/rangeslider.js"></script>
+    <!-- <script>
+        function showConsole(value) {
+            console.log(value);
+        }
+    </script> -->
 
 
     <section id="header">
@@ -33,7 +38,7 @@
 
                     <div class="row">
                         <div class="col-11 offset-1">
-                            <p>Monto a invertir</p>
+                            <p>Monto a invertir (pesos)</p>
                         </div>
                     </div>
                     <div class="row">
@@ -41,7 +46,7 @@
                             <input type="range" min="1000" max="1000000" value="50000" step="1000" data-rangeslider>
                         </div>
                         <div class="col-4">
-                            <input type="number" class="form-control output">
+                            <input type="number" id="" class="form-control output cambiar">
                         </div>
                     </div>
                 </div>
@@ -56,8 +61,8 @@
                         <div class="col-4 offset-1">
                             <input type="range" class="" min="1" max="120" value="12" data-rangeslider>
                         </div>
-                        <div class="col-4" id="cantMeses">
-                            <input type="number" class="form-control output">
+                        <div class="col-4">
+                            <input type="number" id="" class="form-control output cambiar">
                         </div>
                     </div>
                 </div>
@@ -71,7 +76,7 @@
                             <label>Dólares</label>
                         </p>
                         <p>
-                            <input type="checkbox" class="checkbox "checked="checked">
+                            <input type="checkbox" class="checkbox " checked="checked">
                             <label>LEBAC</label>
                         </p>
                         <p>
@@ -88,7 +93,7 @@
                 <div class="row">
                     <div class="col-4 offset-2">
                         <p>
-                            <button class="btn-primary">Calcular</button>
+                            <button class="btn-primary btn-mati">Calcular</button>
                         </p>
 
                     </div>
@@ -96,7 +101,7 @@
                 <div class="row">
                     <div class="col-4 offset-2">
                         <p>
-                            <button class="btn-primary">Crisis!</button>
+                            <button class="btn-primary btn-mati">Crisis!</button>
                         </p>
 
                     </div>
@@ -124,16 +129,32 @@
                 output.value = value;
             }
 
-            $document.on('keydown', '#cantMeses input', function (e) {
-                var $inputRange = $(selector, e.target.parentNode);
-                var value = $('input[type="number"]', e.target.parentNode)[0].value;
+            $('.cambiar').on('change',function(item){
+                var range1 = item.currentTarget.parentElement.parentElement.children[0].children[0];
+                var $inputRange = $(range1);
+                var value = item.currentTarget.value;
                 $inputRange.val(value).change();
-            });
+            })
+
+            // $document.on('change', '#cantMeses input', function (e) {
+            //     var $inputRange = $(selector, e.target.parentNode);
+            //     var value = $('input[type="number"]', e.target.parentNode)[0].value;
+            //     console.log(value);
+            //     $inputRange.val(value).change();
+            // });
+
 
             // Basic rangeslider initialization
             $element.rangeslider({
                 // Deactivate the feature detection
                 polyfill: false,
+                rangeClass: 'rangeslider-1',
+                disabledClass: 'rangeslider--disabled-1',
+                horizontalClass: 'rangeslider--horizontal-1',
+                verticalClass: 'rangeslider--vertical-1',
+                fillClass: 'rangeslider__fill-1',
+                handleClass: 'rangeslider__handle-1',
+
                 // Callback function
                 onInit: function () {
                     valueOutput(this.$element[0]);
