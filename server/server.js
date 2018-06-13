@@ -3,7 +3,9 @@ Dependencias
  */
 const express = require('express')
 const cors = require('cors');
+const csv = require('csvtojson');
 const app = express()
+
 
 app.use(cors());
 app.get('/', function(req, res) {
@@ -47,6 +49,14 @@ app.get('/datos/',function(req,res){
 //     });
 //   });
 // });
+const path = './datos/lebaq-tasas-interes.csv';
+
+csv()
+.fromFile(path).then((jsonObj) => {
+  console.log(jsonObj);
+});
+
+
 
 app.listen(3000, function() {
   console.log('Example app listening on port 3000!')
