@@ -48,7 +48,7 @@ app.get('/datos/',function(req,res){
 //       res.send("Sala " +  sala.name + " ocupada.");
 //     });
 //   });
-// }) ;
+// });
 const path = './datos/lebaq-tasas-interes_ok.csv';
 
 csv()
