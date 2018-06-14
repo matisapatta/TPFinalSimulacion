@@ -49,7 +49,7 @@ app.get('/datos/',function(req,res){
 //     });
 //   });
 // });
-const path = './datos/lebaq-tasas-interes.csv';
+const path = './datos/lebaq-tasas-interes_ok.csv';
 
 csv()
 .fromFile(path).then((jsonObj) => {
