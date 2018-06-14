@@ -179,12 +179,12 @@
 
         $.ajax({
             //async: false,
-            url: "http://localhost:3000/datos",
+            url: "http://localhost:3000/datos1",
             type: "get",
             contentType: "application/json; charset=utf-8",
-            datatype: "jsonp",
+            datatype: "json",
             success: function (result) {
-                Plotly.newPlot('myDiv', result);
+                console.log(result);
             }
 
         });   
