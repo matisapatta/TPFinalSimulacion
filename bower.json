@@ -1,0 +1,24 @@
+{
+  "name": "tpfinalsimulacion",
+  "description": "",
+  "main": "index.js",
+  "authors": [
+    "matisapatta <mati.sapatta@gmail.com>"
+  ],
+  "license": "ISC",
+  "homepage": "https://github.com/matisapatta/TPFinalSimulacion",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^4.1.1",
+    "jquery-cors": "^1.0.0",
+    "plotlyjs": "plotly#^1.18.1",
+    "rangeslider.js": "^2.3.2",
+    "jquery": "^3.3.1"
+  }
+}
