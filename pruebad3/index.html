@@ -9,7 +9,8 @@
         height = +svg.attr("height") - margin.top - margin.bottom,
         g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-    var parseTime = d3.timeParse("%d-%b-%y");
+    var parseTime = d3.timeParse("%x");
+    d3.timeParse()
 
     var x = d3.scaleTime()
         .rangeRound([0, width]);
@@ -20,20 +21,20 @@
     var line = d3.line()
         .x(function (d) {
             console.log(d);
-            return x(d.date);
+            return x(d.fecha);
         })
-        .y(function (d) { return y(d.close); });
+        .y(function (d) { return y(d.tasa_lebac*100); });
 
-    d3.tsv("data.tsv", function (d) {
+    d3.csv("./../server/datos/lebaq-tasas-interes_ok.csv", function (d) {
         console.log(d);
-        d.date = parseTime(d.date);
-        d.close = +d.close;
+        d.fecha = parseTime(d.fecha);
+        d.tasa_lebac = +d.tasa_lebac;
         return d;
     }, function (error, data) {
         if (error) throw error;
 
-        x.domain(d3.extent(data, function (d) { return d.date; }));
-        y.domain(d3.extent(data, function (d) { return d.close; }));
+        x.domain(d3.extent(data, function (d) { return d.fecha; }));
+        y.domain(d3.extent(data, function (d) { return d.tasa_lebac*100; }));
 
         g.append("g")
             .attr("transform", "translate(0," + height + ")")
