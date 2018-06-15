@@ -15,6 +15,8 @@
     <script src="node_modules/jquery/dist/jquery.js"></script>
     <script src=""></script>
     <script src="node_modules/rangeslider.js/dist/rangeslider.js"></script>
+    <!-- <script src="node_modules/d3/dist/d3.js"></script> -->
+    <script src="https://d3js.org/d3.v4.min.js"></script>
     <!-- <script>
         function showConsole(value) {
             console.log(value);
@@ -108,7 +110,9 @@
                     </div>
                 </div>
             </div>
-            <div class="col800 col-8" id="myDiv"></div>
+            <div class="col800 col-8" id="myDiv">
+                <svg width="960" height="500"></svg>
+            </div>
         </div>
 
     </section>
@@ -184,7 +188,8 @@
             contentType: "application/json; charset=utf-8",
             datatype: "json",
             success: function (result) {
-                console.log(result);
+                //console.log(result);
+                // load(result);
             }
 
         });   
