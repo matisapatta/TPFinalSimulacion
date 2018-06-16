@@ -1,65 +1,45 @@
 <!DOCTYPE html>
-<svg width="960" height="500"></svg>
-<script src="https://d3js.org/d3.v4.min.js"></script>
-<script>
+<html>
 
-    var svg = d3.select("svg"),
-        margin = { top: 20, right: 20, bottom: 30, left: 50 },
-        width = +svg.attr("width") - margin.left - margin.right,
-        height = +svg.attr("height") - margin.top - margin.bottom,
-        g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+<head>
+    <link rel="stylesheet" href="./../node_modules/metrics-graphics/dist/metricsgraphics.css">
+    <link rel="stylesheet" href="./../node_modules/dygraphs/dist/dygraph.css">
+</head>
 
-    var parseTime = d3.timeParse("%x");
-    d3.timeParse()
+<body>
 
-    var x = d3.scaleTime()
-        .rangeRound([0, width]);
+    <script src="./../node_modules/jquery/dist/jquery.js"></script>
+    <script src="./../node_modules/d3/dist/d3.js"></script>
+    <script src="./../node_modules/metrics-graphics/dist/metricsgraphics.js"></script>
+    <script src="./../node_modules/dygraphs/dist/dygraph.js"></script>
+    <div id="graph"></div>
 
-    var y = d3.scaleLinear()
-        .rangeRound([height, 0]);
+    <script>
 
-    var line = d3.line()
-        .x(function (d) {
-            console.log(d);
-            return x(d.fecha);
-        })
-        .y(function (d) { return y(d.tasa_lebac*100); });
 
-    d3.csv("./../server/datos/lebaq-tasas-interes_ok.csv", function (d) {
-        console.log(d);
-        d.fecha = parseTime(d.fecha);
-        d.tasa_lebac = +d.tasa_lebac;
-        return d;
-    }, function (error, data) {
-        if (error) throw error;
+       
 
-        x.domain(d3.extent(data, function (d) { return d.fecha; }));
-        y.domain(d3.extent(data, function (d) { return d.tasa_lebac*100; }));
+       
 
-        g.append("g")
-            .attr("transform", "translate(0," + height + ")")
-            .call(d3.axisBottom(x))
-            .select(".domain")
-            .remove();
+        // d3.json('./../src/example.json', function (data) {
+        //     data = MG.convert.date(data, 'date');
+        //     MG.data_graphic({
+        //         title: "Other Linked Graphic",
+        //         description: "Roll over and watch as the graphic to the left triggers.",
+        //         data: data,
+        //         area: false,
+        //         width: 600,
+        //         height: 200,
+        //         right: 40,
+        //         xax_count: 4,
+        //         target: '#myDiv'
+        //     });
+        // });
 
-        g.append("g")
-            .call(d3.axisLeft(y))
-            .append("text")
-            .attr("fill", "#000")
-            .attr("transform", "rotate(-90)")
-            .attr("y", 6)
-            .attr("dy", "0.71em")
-            .attr("text-anchor", "end")
-            .text("Price ($)");
 
-        g.append("path")
-            .datum(data)
-            .attr("fill", "none")
-            .attr("stroke", "steelblue")
-            .attr("stroke-linejoin", "round")
-            .attr("stroke-linecap", "round")
-            .attr("stroke-width", 1.5)
-            .attr("d", line);
-    });
 
-</script>
+    </script>
+
+</body>
+
+</html>
