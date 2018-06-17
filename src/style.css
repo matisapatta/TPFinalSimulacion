@@ -17,7 +17,8 @@ body, html {
   -webkit-transform-style: preserve-3d;
   -moz-transform-style: preserve-3d;
   transform-style: preserve-3d;
-  height: 800px;
+  height: 700px;
+
 }
 
 .col1 {
