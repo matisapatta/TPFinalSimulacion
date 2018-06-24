@@ -50,11 +50,6 @@ app.get('/datos/', function (req, res) {
 //   });
 // });
 
-
-const path = './datos/lebaq-tasas-interes_ok.csv';
-const pathDolar = './datos/tipos-de-cambio-historicos_ok.csv';
-
-
 // app.get('/datos1/', function (req, res) {
 //   csv()
 //     .fromFile(path).then((jsonObj) => {
@@ -67,7 +62,10 @@ app.listen(3000, function () {
   console.log('Example app listening on port 3000!')
 });
 
-
+const pathTasaInt = './datos/principales-tasas-interes-diarias_ok.csv';
+const pathDolar = './datos/tipos-de-cambio-historicos_ok.csv';
+const pathLebac = './datos/lebaq-tasas-interes_ok.csv';
+const pathFondosInv = './datos/fondo_inversion_ok.csv';
 
 class jsonItem {
     get json(){
@@ -98,36 +96,74 @@ class jsonItem {
  
     }
 
-    jsonPrediction(days){//Devuelve el json con los datos mas los datos de predicciones de dias futuros para los proximos t dias
- 
+    jsonPrediction(days){//Devuelve el json con los datos mas los datos de predicciones de dias futuros para los proximos dias
+      var result = [];
+      var i;
+      for (i = 0; i <= days; i++) {
+        result[i] = {fecha: this.getFutureDate(i+1), valor: this.predictVal(i+1).toString()};
+      }
+      return result;
     }
   
   }
 class dolarObj extends jsonItem {
-// formula dolar: Yt = 14.2998 - 0.000676×t + 0.000009×t^2 + 0.43415R, -1 < R < 1
+//USD = 14.2998 - 0.000676×t + 0.000009×t^2 + 0.43415xR + (valorActual  - 20.535), -1 < R < 1
   
   predictVal(t){//Predice el valor del dolar para dentro de 't' dias
     var r = (Math.random() * 2) - 1;
     return 14.2998 - 0.000676*(t+867) + 0.000009*Math.pow((t+867), 2) + 0.43415*r + (this.getLastVal() - 20.535);
   }
-  jsonPrediction(days){//Devuelve el json con los datos mas los datos de predicciones de dias futuros para los proximos dias
-    var result = [];
-    var i;
-    for (i = 0; i <= days; i++) {
-      result[i] = {fecha: this.getFutureDate(i+1), valor: this.predictVal(i+1).toString()};
-    }
-    return result;
+  
+
+}
+class tasaIntObj extends jsonItem { 
+//Tasa de Interés = 38.084 - 0.07559×t + 0.000098×t^2 + 0.90816xR + (valorActual  - 30.44), -1 < R < 1
+    
+  predictVal(t){//Predice la tasa de interes para dentro de 't' dias
+    var r = (Math.random() * 2) - 1;
+    return 38.084 - 0.07559*(t+646) + 0.000098*Math.pow((t+646), 2) + 0.90816*r + (this.getLastVal() - 30.44);
   }
 
 }
+class lebacObj extends jsonItem { 
+  //Tasa de Lebacs = 34.207 - 0.06981×t + 0.000123×t^2 + 1.60247×R + (valorActual  - 26.3)
+      
+  predictVal(t){//Predice la tasa de lebacs para dentro de 't' dias
+    var r = (Math.random() * 2) - 1;
+    return 34.207 - 0.06981*(t+503) + 0.000123*Math.pow((t+503), 2) + 1.60247*r + (this.getLastVal() - 30.16);
+  }
+
+}
+class fondoInvObj extends jsonItem { 
+  //Fondos de Inversión = 71.411 + 0.034873×t + 1.34441×R + (valorActual  - 92.1945)
+      
+  predictVal(t){//Predice el valor de fondos de inversion para dentro de 't' dias
+    var r = (Math.random() * 2) - 1;
+    return 71.411 + 0.034873*(t+596) + 1.34441*r + (this.getLastVal() - 92.1945);
+  }
+
+}
+
 
 var jsonPredicted;
 
 async function main() {
   var dolar = new dolarObj();
   dolar.json = await csv().fromFile(pathDolar);
-  jsonPredicted = dolar.jsonPrediction(3700);
-  // console.log(jsonPredicted);
+  jsonPredictedDolar = dolar.jsonPrediction(3700);
+  //console.log(jsonPredictedDolar);
+  var tasaInt = new tasaIntObj();
+  tasaInt.json = await csv().fromFile(pathTasaInt);
+  jsonPredictedTasaInt = tasaInt.jsonPrediction(3700);
+  //console.log(jsonPredictedTasaInt);
+  var lebac = new lebacObj();
+  lebac.json = await csv().fromFile(pathLebac);
+  jsonPredictedLebac = lebac.jsonPrediction(3700);
+  //console.log(jsonPredictedLebac);
+  var fondosInv = new fondoInvObj();
+  fondosInv.json = await csv().fromFile(pathFondosInv);
+  jsonPredictedFondosInv = fondosInv.jsonPrediction(3700);
+  //console.log(jsonPredictedFondosInv);
 }
 
 app.get('/calcular',function (req,res){
