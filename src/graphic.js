@@ -1,6 +1,7 @@
 
-function calcular() {
-    const g = new Dygraph('graph', "./../server/datos/principales-tasas-interes-diarias_ok.csv", {
+function calcular(jsonData) {
+    // const g = new Dygraph('graph', "./../server/datos/principales-tasas-interes-diarias_ok.csv", {
+        const g = new Dygraph('graph', jsonData, {
         legend: 'always',
         title: 'Título',
         showRoller: true,

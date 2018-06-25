@@ -45,6 +45,7 @@ $(function () {
         onSlide: function (position, value) {
             console.log('onSlide');
             console.log('position: ' + position, 'value: ' + value);
+            calcular2();
             valueOutput(this.$element[0]);
         },
         // Callback function

@@ -55,13 +55,13 @@ const path = './datos/lebaq-tasas-interes_ok.csv';
 const pathDolar = './datos/tipos-de-cambio-historicos_ok.csv';
 
 
-app.get('/datos1/', function (req, res) {
-  csv()
-    .fromFile(path).then((jsonObj) => {
-      console.log(jsonObj);
-      res.json(jsonObj);
-    });
-})
+// app.get('/datos1/', function (req, res) {
+//   csv()
+//     .fromFile(path).then((jsonObj) => {
+//       console.log(jsonObj);
+//       res.json(jsonObj);
+//     });
+// })
 
 app.listen(3000, function () {
   console.log('Example app listening on port 3000!')
@@ -121,12 +121,19 @@ class dolarObj extends jsonItem {
 
 }
 
+var jsonPredicted;
+
 async function main() {
   var dolar = new dolarObj();
   dolar.json = await csv().fromFile(pathDolar);
-  var jsonPredicted = dolar.jsonPrediction(365);
-  console.log(jsonPredicted);
+  jsonPredicted = dolar.jsonPrediction(3500);
+  // console.log(jsonPredicted);
 }
+
+app.get('/calcular',function (req,res){
+  res.json(jsonPredicted);
+})
+
 
 main();
 /*function GetPercentVariations(jsonRaw) {
