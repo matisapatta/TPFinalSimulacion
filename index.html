@@ -79,19 +79,19 @@
                     <div class="col-6 offset-1">
                         <h2 class="alt-title">Alternativas</h2>
                         <p>
-                            <input type="checkbox" checked="checked" class="checkbox" id="0" onclick="(new calcular()).change(this)">
+                            <input type="checkbox" checked="checked" class="checkbox" id="0" onclick="">
                             <label for="0">Dólares</label>
                         </p>
                         <p>
-                            <input type="checkbox" class="checkbox " checked="checked" id="1" onclick="calcular().change(this)">
+                            <input type="checkbox" class="checkbox " checked="checked" id="1" onclick="">
                             <label for="1">LEBAC</label>
                         </p>
                         <p>
-                            <input type="checkbox" class="checkbox " checked="checked" id="2" onclick="p.change(this)">
+                            <input type="checkbox" class="checkbox " checked="checked" id="2" onclick="">
                             <label for="2">Fondos de Inversión</label>
                         </p>
                         <p>
-                            <input type="checkbox" class="checkbox " checked="checked" id="3" onclick="calcular(this)">
+                            <input type="checkbox" class="checkbox " checked="checked" id="3" onclick="">
                             <label for="3">Plazo Fijo</label>
                         </p>
 
@@ -116,7 +116,43 @@
                     </div>
                 </div>
             </div>
-            <div class="col800 col-7" id="graph">
+            <div class="col-7">
+                <div class="row">
+                    <div class="col600 col-12" id="graph"></div>
+                    <div class="col-12 tabla">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col"></th>
+                                    <th scope="col">Capital Final</th>
+                                    <th scope="col">Ganancia</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th scope="row">Dólar</th>
+                                    <td id="dolarcap"></td>
+                                    <td id="dolargan"></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">LEBAC</th>
+                                    <td>Jacob</td>
+                                    <td>Thornton</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Fondos de Inversión</th>
+                                    <td>Larry</td>
+                                    <td>the Bird</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Plazo Fijo</th>
+                                    <td>Larry</td>
+                                    <td>the Bird</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
                 <!-- <svg width="960" height="500"></svg> -->
             </div>
             <!-- <div id="graph"></div> -->
@@ -127,17 +163,20 @@
     <script src="src/graphic.js"></script>
     <script>
 
+        $("table").hide();
+
         function getFormatedData(dataArray) {
             var dolarHoy = dataArray[0].valor;
-            var inversionHoy = $('#monto').val()/dolarHoy;
-            console.log(inversionHoy);
+            var inversionHoy = $('#monto').val() / dolarHoy;
+            // console.log(inversionHoy);
             var r = "fecha,valor\n";
             // for (var i = 0; i < dataArray.length; i++) {
-                for (var i = 0; i < $('#meses').val()*30; i++) {
+            for (var i = 0; i < $('#meses').val() * 30; i++) {
                 r += dataArray[i].fecha;
-                r += "," + inversionHoy*dataArray[i].valor;
+                r += "," + inversionHoy * dataArray[i].valor;
                 r += "\n";
             }
+            // console.log(r);
             return r;
         }
 
@@ -150,14 +189,28 @@
                 contentType: "application/json; charset=utf-8",
                 datatype: "json",
                 success: function (result) {
-                    console.log(result);
+                    // console.log(result);
                     var enviar = getFormatedData(result);
+                    // console.log(enviar);
+                    var inversionTotal = enviar.split(",").pop();
+                    inversionTotal = Math.round(inversionTotal*100)/100;
+                    // var inversionTotal = (result[(($('#meses').val() * 30) - 1)].valor);
+                    console.log(inversionTotal);
+                    loadTable(inversionTotal);
                     calcular(enviar);
                     // load(result);
                 }
 
             });
 
+        }
+
+        function loadTable(inversionTotal) {
+            $("table").show();
+            $('#dolarcap').html("$" + inversionTotal);
+            var ganancia = inversionTotal-$('#monto').val();
+            ganancia = Math.round(ganancia*100)/100;
+            $('#dolargan').html("$" + ganancia);
         }
 
     </script>

@@ -13,11 +13,11 @@ body, html {
   height: 800px;
 }
 
-.col800 {
+.col600 {
   -webkit-transform-style: preserve-3d;
   -moz-transform-style: preserve-3d;
   transform-style: preserve-3d;
-  height: 700px;
+  height: 550px;
 
 }
 
@@ -62,6 +62,10 @@ body, html {
 .btn-mati:active{
   background: #1a036d!important;
   box-shadow: #1a036d!important;
+}
+
+.tabla {
+  margin-top: 10px;
 }
 
 /* Rangeslider classes */

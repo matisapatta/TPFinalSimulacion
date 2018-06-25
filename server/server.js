@@ -126,7 +126,7 @@ var jsonPredicted;
 async function main() {
   var dolar = new dolarObj();
   dolar.json = await csv().fromFile(pathDolar);
-  jsonPredicted = dolar.jsonPrediction(3500);
+  jsonPredicted = dolar.jsonPrediction(3700);
   // console.log(jsonPredicted);
 }
 
