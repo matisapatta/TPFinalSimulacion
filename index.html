@@ -159,6 +159,16 @@
         </div>
 
     </section>
+    <section class="container-fluid">
+        <div class="row">
+            <div class="col-6 col600" id="dolargraf"></div>
+            <div class="col-6 col600" id="tasasgraf"></div>
+        </div>
+        <div class="row">
+            <div class="col-6 col600" id="lebacgraf" ></div>
+            <div class="col-6 col600" id="fcigraf" ></div>
+        </div>
+    </section>
 
 
     <script>
@@ -166,7 +176,7 @@
 
         $("table").hide();
 
-        function getFormatedData(dataArray) {
+        function getFormatedData1(dataArray) {
             var dolarHoy = dataArray[0].valor;
             var inversionHoy = $('#monto').val() / dolarHoy;
             // console.log(inversionHoy);
@@ -175,6 +185,20 @@
             for (var i = 0; i < $('#meses').val() * 30; i++) {
                 r += dataArray[i].fecha;
                 r += "," + inversionHoy * dataArray[i].valor;
+                r += "\n";
+            }
+            // console.log(r);
+            return r;
+        }
+        function getFormatedData(dataArray) {
+            var dolarHoy = dataArray[0].valor;
+            //var inversionHoy = $('#monto').val() / dolarHoy;
+            // console.log(inversionHoy);
+            var r = "fecha,valor\n";
+            // for (var i = 0; i < dataArray.length; i++) {
+            for (var i = 0; i < $('#meses').val() * 30; i++) {
+                r += dataArray[i].fecha;
+                r += "," + dataArray[i].valor;
                 r += "\n";
             }
             // console.log(r);
@@ -191,7 +215,7 @@
                 datatype: "json",
                 success: function (result) {
                     // console.log(result);
-                    var enviar = getFormatedData(result);
+                    var enviar = getFormatedData1(result);
                     // console.log(enviar);
                     var inversionTotal = enviar.split(",").pop();
                     inversionTotal = Math.round(inversionTotal * 100) / 100;
@@ -199,7 +223,8 @@
                     // console.log(inversionTotal);
                     // loadTable(inversionTotal);
                     getInversionTotal(inversionTotal);
-                    calcular(enviar);
+                    var dolarenviar = getFormatedData(result);
+                    calcular(enviar,dolarenviar);
                     // load(result);
                 }
 
