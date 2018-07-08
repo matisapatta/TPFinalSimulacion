@@ -67,6 +67,10 @@ body, html {
 .tabla {
   margin-top: 10px;
 }
+h3 {
+  text-align: center;
+  margin: 10px;
+}
 
 /* Rangeslider classes */
 

@@ -10,7 +10,7 @@ function getInversionTotal(inversion){
     inversionTotal = inversion;
 }
 
-function calcular(jsonData,dolar) {
+function calcular(jsonData,dolar,tasa,fci,lebac) {
     // const g = new Dygraph('graph', "./../server/datos/principales-tasas-interes-diarias_ok.csv", {
     // console.log(jsonData);
     g = new Dygraph('graph', jsonData, {
@@ -19,7 +19,8 @@ function calcular(jsonData,dolar) {
         showRoller: true,
         rollPeriod: 14,
         // customBars: true,
-        ylabel: 'Dinero en $',
+        //ylabel: 'Dinero en $',
+        labels: ['Fecha','Dolar','Fondos de Inversion','Plazo Fijo','Lebac'],
         strokeWidth: 2,
         visibility: visibilidad
     });
@@ -33,7 +34,7 @@ function calcular(jsonData,dolar) {
         strokeWidth: 2,
         visibility: visibilidad
     });
-    g2 = new Dygraph(document.getElementById("tasasgraf"), jsonData, {
+    g2 = new Dygraph(document.getElementById("tasasgraf"), tasa, {
         legend: 'always',
         title: '',
         showRoller: true,
@@ -43,7 +44,7 @@ function calcular(jsonData,dolar) {
         strokeWidth: 2,
         visibility: visibilidad
     });
-    g3 = new Dygraph(document.getElementById("lebacgraf"), jsonData, {
+    g3 = new Dygraph(document.getElementById("lebacgraf"), lebac, {
         legend: 'always',
         title: '',
         showRoller: true,
@@ -53,7 +54,7 @@ function calcular(jsonData,dolar) {
         strokeWidth: 2,
         visibility: visibilidad
     });
-    g4 = new Dygraph(document.getElementById("fcigraf"), jsonData, {
+    g4 = new Dygraph(document.getElementById("fcigraf"), fci, {
         legend: 'always',
         title: '',
         showRoller: true,
@@ -66,19 +67,19 @@ function calcular(jsonData,dolar) {
     // console.log(inversionTotal);
     loadTable(inversionTotal);
     changeStatus(status);
-    setStatus();
+    // setStatus();
 }
 
 function changeStatus(status) {
     g.setVisibility(parseInt(status.id), status.checked);
     loadTable(inversionTotal);
-    setStatus();
+    //setStatus();
 }
 
-function setStatus() {
-    document.getElementById("visibility").innerHTML =
-        g.visibility().toString();
-}
+// function setStatus() {
+//     document.getElementById("visibility").innerHTML =
+//         g.visibility().toString();
+// }
 
 
 
