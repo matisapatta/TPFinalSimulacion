@@ -80,12 +80,13 @@ class jsonItem {
     }
 
     getFutureDate(nDays){
-      var someDate = new Date(this.contenido[this.contenido.length-1].fecha);
+      //var someDate = new Date(this.contenido[this.contenido.length-1].fecha); //fecha desde la ultima entrada del archivo
+      var someDate = new Date(); //fecha de hoy
       someDate.setDate(someDate.getDate() + nDays); 
     
       var dd = someDate.getDate();
       var mm = someDate.getMonth() + 1;
-      var y = someDate.getFullYear();
+      var y = someDate.getFullYear(); 
     
       var someFormattedDate = mm + '/'+ dd + '/'+ y;
     
@@ -145,25 +146,40 @@ class fondoInvObj extends jsonItem {
 }
 
 
-var jsonPredicted;
+var jsonPredicted = [];
+var jsonPredictedDolar;
+var jsonPredictedTasaInt;
+var jsonPredictedLebac;
+var jsonPredictedFondosInv;
 
 async function main() {
-  var dolar = new dolarObj();
+  const days = 3700;
+
+  var dolar = new dolarObj();  
   dolar.json = await csv().fromFile(pathDolar);
-  jsonPredictedDolar = dolar.jsonPrediction(3700);
+  jsonPredictedDolar = dolar.jsonPrediction(days);
   //console.log(jsonPredictedDolar);
   var tasaInt = new tasaIntObj();
   tasaInt.json = await csv().fromFile(pathTasaInt);
-  jsonPredictedTasaInt = tasaInt.jsonPrediction(3700);
+  jsonPredictedTasaInt = tasaInt.jsonPrediction(days);
   //console.log(jsonPredictedTasaInt);
   var lebac = new lebacObj();
   lebac.json = await csv().fromFile(pathLebac);
-  jsonPredictedLebac = lebac.jsonPrediction(3700);
+  jsonPredictedLebac = lebac.jsonPrediction(days);
   //console.log(jsonPredictedLebac);
   var fondosInv = new fondoInvObj();
   fondosInv.json = await csv().fromFile(pathFondosInv);
-  jsonPredictedFondosInv = fondosInv.jsonPrediction(3700);
+  jsonPredictedFondosInv = fondosInv.jsonPrediction(days);
   //console.log(jsonPredictedFondosInv);
+  
+  var i;
+  for (i = 0; i < days; i++) {
+    jsonPredicted[i] = {fecha: jsonPredictedDolar[i].fecha, valorDolar: jsonPredictedDolar[i].valor, 
+                                                    valorTasaInt: jsonPredictedTasaInt[i].valor, 
+                                                    valorLebac: jsonPredictedLebac[i].valor, 
+                                                    valorFondosInv: jsonPredictedFondosInv[i].valor};
+  }
+  console.log(jsonPredicted);
 }
 
 app.get('/calcular',function (req,res){
