@@ -68,6 +68,7 @@ const pathLebac = './datos/lebaq-tasas-interes_ok.csv';
 const pathFondosInv = './datos/fondo_inversion_ok.csv';
 
 class jsonItem {
+
     get json(){
       return this.contenido;
     }
@@ -98,12 +99,12 @@ class jsonItem {
     }
 
     jsonPrediction(days){//Devuelve el json con los datos mas los datos de predicciones de dias futuros para los proximos dias
-      var result = [];
+      this.result = [];
       var i;
       for (i = 0; i <= days; i++) {
-        result[i] = {fecha: this.getFutureDate(i+1), valor: this.predictVal(i+1).toString()};
+        this.result[i] = {fecha: this.getFutureDate(i+1), valor: this.predictVal(i+1).toString()};
       }
-      return result;
+      return this.result;
     }
   
   }
@@ -118,20 +119,31 @@ class dolarObj extends jsonItem {
 
 }
 class tasaIntObj extends jsonItem { 
-//Tasa de Interés = 38.084 - 0.07559×t + 0.000098×t^2 + 0.90816xR + (valorActual  - 30.44), -1 < R < 1
-    
+  //Tasa de Interés = (valort-1 + valort-2) / 2 + 0.43932×R
   predictVal(t){//Predice la tasa de interes para dentro de 't' dias
+  
     var r = (Math.random() * 2) - 1;
-    return 38.084 - 0.07559*(t+646) + 0.000098*Math.pow((t+646), 2) + 0.90816*r + (this.getLastVal() - 30.44);
+    if (t==1)
+      return (parseFloat(this.getLastVal()) + parseFloat(this.contenido[this.contenido.length-2].valor))/2 + 0.43932*r;
+    else if (t==2)
+      return (parseFloat(this.getLastVal()) + parseFloat(this.result[0].valor))/2 + 0.43932*r;
+    else
+      return (parseFloat(this.result[t-2].valor)+ parseFloat(this.result[t-3].valor))/2 + 0.43932*r;
   }
 
 }
 class lebacObj extends jsonItem { 
-  //Tasa de Lebacs = 34.207 - 0.06981×t + 0.000123×t^2 + 1.60247×R + (valorActual  - 26.3)
+  //Tasa de Lebacs = (valort-1 + valort-2) / 2 + 0.146160×R
       
-  predictVal(t){//Predice la tasa de lebacs para dentro de 't' dias
+  predictVal(t){//Predice la tasa de interes para dentro de 't' dias
+  
     var r = (Math.random() * 2) - 1;
-    return 34.207 - 0.06981*(t+503) + 0.000123*Math.pow((t+503), 2) + 1.60247*r + (this.getLastVal() - 30.16);
+    if (t==1)
+      return (parseFloat(this.getLastVal()) + parseFloat(this.contenido[this.contenido.length-2].valor))/2 + 0.146160*r;
+    else if (t==2)
+      return (parseFloat(this.getLastVal()) + parseFloat(this.result[0].valor))/2 + 0.146160*r;
+    else
+      return (parseFloat(this.result[t-2].valor)+ parseFloat(this.result[t-3].valor))/2 + 0.146160*r;
   }
 
 }
