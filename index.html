@@ -108,7 +108,8 @@
                 <div class="row">
                     <div class="col-4 offset-2">
                         <p>
-                            <!--button class="btn-primary btn-mati">Crisis!</button-->
+                            <input type="checkbox" class="checkbox " checked="checked" id="crisis">
+                            <label for="3">Crisis</label>
                         </p>
                         <!-- <p>g.visibility() =
                             <span id="visibility"></span>
@@ -204,8 +205,8 @@
 
         $("table").hide();
         $('#graficos1').hide();
-        var pepito = true;
-        console.log(pepito);
+
+       
 
         function getFormatedData(dataArray) {
             var dolarHoy = dataArray[0].valorDolar;
@@ -215,6 +216,7 @@
             var inversionDolarHoy = $('#monto').val() / dolarHoy;
             var inversionFCIhoy = $('#monto').val() / FCIhoy;
             var inversionPFhoy = $('#monto').val();
+            // var inversionPFhoy = $('#monto').val()* (1+(dataArray[0].valorTasaInt/100)/12);
             var inversionLebachoy = $('#monto').val();
 
             var r = "";
@@ -226,16 +228,18 @@
                 r += "," + inversionPFhoy;
                 r += "," + inversionLebachoy;
                 r += "\n";
-                var inversionPFhoy = inversionPFhoy * (1+(dataArray[j].valorTasaInt/100)/365);
-                var inversionLebachoy = inversionLebachoy * (1+(dataArray[j].valorLebac/100)/365);
-                if(i!=0){
-                    if(i%30 == 0){
-                    j = i;
-                    }    
-                }
+                inversionPFhoy = inversionPFhoy * (1+(dataArray[j].valorTasaInt/100)/365);
+                inversionLebachoy = inversionLebachoy * (1+(dataArray[j].valorLebac/100)/365);
+                // if(i!=0){
+                //     if(i%30 == 0){
+                //     j = i;
+                //     inversionPFhoy = inversionPFhoy * (1+(dataArray[j].valorTasaInt/100)/12);
+                //     }    
+                // }
                 
             }
 
+            console.log($('#crisis').is(':checked'));
             return r;
         }
         function getFormatedDataDolar(dataArray) {
@@ -275,6 +279,7 @@
             }
 
             return r;
+            
         }
 
 
@@ -285,6 +290,9 @@
                 type: "get",
                 contentType: "application/json; charset=utf-8",
                 datatype: "json",
+                data: {
+                    crisis: $('#crisis').is(':checked')
+                },
                 success: function (result) {
                     var enviar = getFormatedData(result);
 
@@ -309,15 +317,7 @@
 
             });
             $('#graficos1').show();
-            pepito = false;
 
-        }
-
-        function calcular(){
-            if(!pepito){
-                calcular2();
-            }
-            console.log(pepito);
         }
 
 

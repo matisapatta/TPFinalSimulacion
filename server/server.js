@@ -77,7 +77,7 @@ class jsonItem {
     }
   
     getLastVal(){ //Ultimo valor de los datos actuales desde CSV
-      return this.contenido[this.contenido.length-1].valor;
+        return this.contenido[this.contenido.length-1].valor;
     }
 
     getFutureDate(nDays){
@@ -111,10 +111,26 @@ class jsonItem {
 class dolarObj extends jsonItem {
 //USD = 14.2998 - 0.000676×t + 0.000009×t^2 + 0.43415xR + (valorActual  - 20.535), -1 < R < 1
   
+  
+
   predictVal(t){//Predice el valor del dolar para dentro de 't' dias
     var r = (Math.random() * 2) - 1;
-    return 14.2998 - 0.000676*(t+867) + 0.000009*Math.pow((t+867), 2) + 0.43415*r + (this.getLastVal() - 20.535);
+    var sumacrisis = 0;
+    var rcrisis = Math.random();
+    if( v_crisis == 'true' ){
+      if(rcrisis>0.95){
+        sumacrisis = Math.random()*1.2;
+        dolarHoy = dolarHoy + sumacrisis;
+      }
+    } else {
+      dolarHoy = this.getLastVal();
+    }
+    // return 14.2998 - 0.000676*(t+867) + 0.000009*Math.pow((t+867), 2) + 0.43415*r + (this.getLastVal() - 20.535);
+
+    return 14.2998 - 0.000676*(t+867) + 0.000009*Math.pow((t+867), 2) + 0.43415*r + (dolarHoy - 20.535);
   }
+
+
   
 
 }
@@ -163,26 +179,29 @@ var jsonPredictedDolar;
 var jsonPredictedTasaInt;
 var jsonPredictedLebac;
 var jsonPredictedFondosInv;
+var dolarHoy;
+var v_crisis;
 
-async function main() {
+async function main(crisis) {
   const days = 3700;
-
+  v_crisis = crisis;
   var dolar = new dolarObj();  
   dolar.json = await csv().fromFile(pathDolar);
+  dolarHoy = parseFloat(dolar.getLastVal());
   jsonPredictedDolar = dolar.jsonPrediction(days);
-  //console.log(jsonPredictedDolar);
+
   var tasaInt = new tasaIntObj();
   tasaInt.json = await csv().fromFile(pathTasaInt);
   jsonPredictedTasaInt = tasaInt.jsonPrediction(days);
-  //console.log(jsonPredictedTasaInt);
+
   var lebac = new lebacObj();
   lebac.json = await csv().fromFile(pathLebac);
   jsonPredictedLebac = lebac.jsonPrediction(days);
-  //console.log(jsonPredictedLebac);
+
   var fondosInv = new fondoInvObj();
   fondosInv.json = await csv().fromFile(pathFondosInv);
   jsonPredictedFondosInv = fondosInv.jsonPrediction(days);
-  //console.log(jsonPredictedFondosInv);
+
   
   var i;
   for (i = 0; i < days; i++) {
@@ -191,12 +210,14 @@ async function main() {
                                                     valorLebac: jsonPredictedLebac[i].valor, 
                                                     valorFondosInv: jsonPredictedFondosInv[i].valor};
   }
-  console.log(jsonPredicted);
+
 }
 
 app.get('/calcular',function (req,res){
+  main(req.query.crisis);
   res.json(jsonPredicted);
 })
+
 
 
 main();
