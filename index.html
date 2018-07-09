@@ -66,7 +66,7 @@
                     </div>
                     <div class="row">
                         <div class="col-4 offset-1">
-                            <input type="range" class="" min="1" max="12" value="3" data-rangeslider>
+                            <input type="range" class="" min="1" max="24" value="3" data-rangeslider>
                         </div>
                         <div class="col-4">
                             <input type="number" id="meses" class="form-control output cambiar" onchange="calcular2()">
@@ -84,15 +84,15 @@
                         </p>
                         <p>
                             <input type="checkbox" class="checkbox " checked="checked" id="1" onclick="changeStatus(this)">
-                            <label for="1">LEBAC</label>
+                            <label for="1">Fondos de Inversión</label>
                         </p>
                         <p>
                             <input type="checkbox" class="checkbox " checked="checked" id="2" onclick="changeStatus(this)">
-                            <label for="2">Fondos de Inversión</label>
+                            <label for="2">Plazo Fijo</label>
                         </p>
                         <p>
                             <input type="checkbox" class="checkbox " checked="checked" id="3" onclick="changeStatus(this)">
-                            <label for="3">Plazo Fijo</label>
+                            <label for="3">LEBAC</label>
                         </p>
 
                     </div>
@@ -135,11 +135,6 @@
                                     <td id="dolargan"></td>
                                 </tr>
                                 <tr>
-                                    <th scope="row">LEBAC</th>
-                                    <td id="lebaccap"></td>
-                                    <td id="lebacgan"></td>
-                                </tr>
-                                <tr>
                                     <th scope="row">Fondos de Inversión</th>
                                     <td id="fcicap"></td>
                                     <td id="fcigan"></td>
@@ -148,6 +143,11 @@
                                     <th scope="row">Plazo Fijo</th>
                                     <td id="pfcap"></td>
                                     <td id="pfgan"></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">LEBAC</th>
+                                    <td id="lebaccap"></td>
+                                    <td id="lebacgan"></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -204,6 +204,8 @@
 
         $("table").hide();
         $('#graficos1').hide();
+        var pepito = true;
+        console.log(pepito);
 
         function getFormatedData(dataArray) {
             var dolarHoy = dataArray[0].valorDolar;
@@ -214,9 +216,9 @@
             var inversionFCIhoy = $('#monto').val() / FCIhoy;
             var inversionPFhoy = $('#monto').val();
             var inversionLebachoy = $('#monto').val();
-            // console.log(inversionHoy);
+
             var r = "";
-            // for (var i = 0; i < dataArray.length; i++) {
+            var j = 1;
             for (var i = 0; i < $('#meses').val() * 30; i++) {
                 r += dataArray[i].fecha;
                 r += "," + inversionDolarHoy * dataArray[i].valorDolar;
@@ -224,109 +226,98 @@
                 r += "," + inversionPFhoy;
                 r += "," + inversionLebachoy;
                 r += "\n";
-                var inversionPFhoy = inversionPFhoy * (1+(dataArray[i].valorTasaInt/100)/365);
-                var inversionLebachoy = inversionLebachoy * (1+(dataArray[i].valorLebac/100)/365);
+                var inversionPFhoy = inversionPFhoy * (1+(dataArray[j].valorTasaInt/100)/365);
+                var inversionLebachoy = inversionLebachoy * (1+(dataArray[j].valorLebac/100)/365);
+                if(i!=0){
+                    if(i%30 == 0){
+                    j = i;
+                    }    
+                }
+                
             }
-            //  console.log(r);
+
             return r;
         }
         function getFormatedDataDolar(dataArray) {
-            var dolarHoy = dataArray[0].valorDolar;
-            //var inversionHoy = $('#monto').val() / dolarHoy;
-            // console.log(inversionHoy);
             var r = "fecha,valor\n";
-            // for (var i = 0; i < dataArray.length; i++) {
             for (var i = 0; i < $('#meses').val() * 30; i++) {
                 r += dataArray[i].fecha;
                 r += "," + dataArray[i].valorDolar;
                 r += "\n";
             }
-            // console.log(r);
             return r;
         }
         function getFormatedDataFCI(dataArray) {
-            var dolarHoy = dataArray[0].valorFondosInv;
-            //var inversionHoy = $('#monto').val() / dolarHoy;
-            // console.log(inversionHoy);
             var r = "fecha,valor\n";
-            // for (var i = 0; i < dataArray.length; i++) {
             for (var i = 0; i < $('#meses').val() * 30; i++) {
                 r += dataArray[i].fecha;
                 r += "," + dataArray[i].valorFondosInv;
                 r += "\n";
             }
-            // console.log(r);
             return r;
         }
         function getFormatedDataLebac(dataArray) {
-            var dolarHoy = dataArray[0].valorLebac;
-            //var inversionHoy = $('#monto').val() / dolarHoy;
-            // console.log(inversionHoy);
             var r = "fecha,valor\n";
-            // for (var i = 0; i < dataArray.length; i++) {
             for (var i = 0; i < $('#meses').val() * 30; i++) {
                 r += dataArray[i].fecha;
                 r += "," + dataArray[i].valorLebac;
                 r += "\n";
             }
-            // console.log(r);
             return r;
         }
         function getFormatedDataTasa(dataArray) {
-            var dolarHoy = dataArray[0].valorTasaInt;
-            //var inversionHoy = $('#monto').val() / dolarHoy;
-            // console.log(inversionHoy);
+
             var r = "fecha,valor\n";
-            // for (var i = 0; i < dataArray.length; i++) {
             for (var i = 0; i < $('#meses').val() * 30; i++) {
                 r += dataArray[i].fecha;
                 r += "," + dataArray[i].valorTasaInt;
                 r += "\n";
             }
-            // console.log(r);
+
             return r;
         }
 
 
         function calcular2() {
             $.ajax({
-                //async: false,
+
                 url: "http://localhost:3000/calcular",
                 type: "get",
                 contentType: "application/json; charset=utf-8",
                 datatype: "json",
                 success: function (result) {
-                    // console.log(result);
                     var enviar = getFormatedData(result);
-                    // console.log(enviar);
+
                     var array = enviar.split(',');
                     var inversionTotalLebac = array.pop();
                     var inversionTotalPF = array.pop();
                     var inversionTotalFCI = array.pop();
                     var inversionTotalDolar = array.pop();
-                    // var inversionTotalDolar = enviar.split(",").pop();
-                    // inversionTotal = Math.round(inversionTotal * 100) / 100;
-                    console.log(inversionTotalLebac);
-                    console.log(inversionTotalPF);
-                    console.log(inversionTotalFCI);
-                    console.log(inversionTotalDolar);
+
+                    
                     var inversionTotal = [inversionTotalDolar,inversionTotalLebac,inversionTotalFCI,inversionTotalPF];
-                    // var inversionTotal = (result[(($('#meses').val() * 30) - 1)].valor);
-                    // console.log(inversionTotal);
-                    // loadTable(inversionTotal);
+
                     getInversionTotal(inversionTotal);
-                    //console.log(inversionTotal);
+
                     var dolarenviar = getFormatedDataDolar(result);
                     var tasaenviar = getFormatedDataTasa(result);
                     var fcienviar = getFormatedDataFCI(result);
                     var lebacenviar = getFormatedDataLebac(result);
                     calcular(enviar,dolarenviar,tasaenviar,fcienviar,lebacenviar);
-                    // load(result);
+                  
                 }
 
             });
             $('#graficos1').show();
+            pepito = false;
 
+        }
+
+        function calcular(){
+            if(!pepito){
+                calcular2();
+            }
+            console.log(pepito);
         }
 
 
@@ -336,6 +327,11 @@
             var inversionTotalL = inversionTotal[1];
             var inversionTotalF = inversionTotal[2];
             var inversionTotalP = inversionTotal[3];
+
+            var inversionTotalD = Math.round(inversionTotalD * 100) / 100;
+            var inversionTotalL = Math.round(inversionTotalL * 100) / 100;
+            var inversionTotalF = Math.round(inversionTotalF * 100) / 100;
+            var inversionTotalP = Math.round(inversionTotalP * 100) / 100;
 
             var gananciaD = inversionTotalD - $('#monto').val();
             gananciaD = Math.round(gananciaD * 100) / 100;
@@ -357,25 +353,25 @@
                 $('#dolargan').html("N/A");
             }
             if ($('#1').is(":checked")) {
-                $('#lebaccap').html("$" + inversionTotalL);
-                $('#lebacgan').html("$" + gananciaL);
-            } else {
-                $('#lebaccap').html("N/A");
-                $('#lebacgan').html("N/A");
-            }
-            if ($('#2').is(":checked")) {
                 $('#fcicap').html("$" + inversionTotalF);
                 $('#fcigan').html("$" + gananciaF);
             } else {
                 $('#fcicap').html("N/A");
                 $('#fcigan').html("N/A");
             }
-            if ($('#3').is(":checked")) {
+            if ($('#2').is(":checked")) {
                 $('#pfcap').html("$" + inversionTotalP);
                 $('#pfgan').html("$" + gananciaP);
             } else {
                 $('#pfcap').html("N/A");
                 $('#pfgan').html("N/A");
+            }
+            if ($('#3').is(":checked")) {
+                $('#lebaccap').html("$" + inversionTotalL);
+                $('#lebacgan').html("$" + gananciaL);
+            } else {
+                $('#lebaccap').html("N/A");
+                $('#lebacgan').html("N/A");
             }
 
 
