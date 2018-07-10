@@ -30,7 +30,7 @@ function calcular(jsonData,dolar,tasa,fci,lebac) {
         showRoller: true,
         rollPeriod: 14,
         // customBars: true,
-        ylabel: 'Dinero en $',
+        ylabel: 'Valor del dólar en $',
         strokeWidth: 2,
         visibility: visibilidad
     });
@@ -40,7 +40,7 @@ function calcular(jsonData,dolar,tasa,fci,lebac) {
         showRoller: true,
         rollPeriod: 14,
         // customBars: true,
-        ylabel: 'Dinero en $',
+        ylabel: 'Tasas de interés en % anual',
         strokeWidth: 2,
         visibility: visibilidad
     });
@@ -50,7 +50,7 @@ function calcular(jsonData,dolar,tasa,fci,lebac) {
         showRoller: true,
         rollPeriod: 14,
         // customBars: true,
-        ylabel: 'Dinero en $',
+        ylabel: 'Tasas de interés en % anual',
         strokeWidth: 2,
         visibility: visibilidad
     });
@@ -60,7 +60,7 @@ function calcular(jsonData,dolar,tasa,fci,lebac) {
         showRoller: true,
         rollPeriod: 14,
         // customBars: true,
-        ylabel: 'Dinero en $',
+        ylabel: 'Valor de la cuotaparte en $',
         strokeWidth: 2,
         visibility: visibilidad
     });

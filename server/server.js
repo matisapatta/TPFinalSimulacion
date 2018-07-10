@@ -168,7 +168,7 @@ class fondoInvObj extends jsonItem {
       
   predictVal(t){//Predice el valor de fondos de inversion para dentro de 't' dias
     var r = (Math.random() * 2) - 1;
-    return 71.411 + 0.034873*(t+596) + 1.34441*r + (this.getLastVal() - 92.1945);
+    return 71.411 + 0.034873*(t+596) + 3.34441*r + (this.getLastVal() - 92.1945);
   }
 
 }
