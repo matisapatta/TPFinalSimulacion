@@ -1,11 +1,12 @@
 /*
 Dependencias
  */
+"use strict";
 const express = require('express')
 const cors = require('cors');
 const csv = require('csvtojson');
 const app = express()
-
+const variable = 1;
 
 app.use(cors());
 app.get('/', function (req, res) {
@@ -20,8 +21,8 @@ app.get('/datos/', function (req, res) {
       type: 'scatter'
     }]
   );
-
 })
+
 
 // // Pido estado de una sala
 // app.get('/sala/:name', function(req, res) {

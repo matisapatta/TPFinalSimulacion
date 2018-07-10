@@ -1,4 +1,5 @@
 
+// "use strict";
 var g;
 var g1;
 var g2;
